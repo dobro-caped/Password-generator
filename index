@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    #password {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+
+    input {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Password Generator</h1>
+  <div>
+    <label for="length">Password Length:</label>
+    <input type="number" id="length" min="4" max="50" value="12">
+  </div>
+  <div>
+    <label for="uppercase">Include Uppercase:</label>
+    <input type="checkbox" id="uppercase" checked>
+  </div>
+  <div>
+    <label for="lowercase">Include Lowercase:</label>
+    <input type="checkbox" id="lowercase" checked>
+  </div>
+  <div>
+    <label for="numbers">Include Numbers:</label>
+    <input type="checkbox" id="numbers" checked>
+  </div>
+  <div>
+    <label for="special">Include Special Characters:</label>
+    <input type="checkbox" id="special" checked>
+  </div>
+  <button onclick="generatePassword()">Generate Password</button>
+  <div>
+    <h2>Your Password:</h2>
+    <input type="text" id="password" readonly>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+  </div>
+
+  <script>
+    function generatePassword() {
+      const length = document.getElementById('length').value;
+      const uppercase = document.getElementById('uppercase').checked;
+      const lowercase = document.getElementById('lowercase').checked;
+      const numbers = document.getElementById('numbers').checked;
+      const special = document.getElementById('special').checked;
+
+      const charset = [];
+      if (uppercase) charset.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+      if (lowercase) charset.push('abcdefghijklmnopqrstuvwxyz');
+      if (numbers) charset.push('0123456789');
+      if (special) charset.push('!@#$%^&*()_-+=<>?');
+
+      if (charset.length === 0) {
+        alert('Please select at least one character set.');
+        return;
+      }
+
+      const passwordArray = [];
+      for (let i = 0; i < length; i++) {
+        const randomCharset = charset[Math.floor(Math.random() * charset.length)];
+        const randomChar = randomCharset[Math.floor(Math.random() * randomCharset.length)];
+        passwordArray.push(randomChar);
+      }
+
+      const password = passwordArray.join('');
+      document.getElementById('password').value = password;
+    }
+
+    function copyToClipboard() {
+      const passwordField = document.getElementById('password');
+      passwordField.select();
+      document.execCommand('copy');
+      alert('Password copied to clipboard!');
+    }
+  </script>
+</body>
+</html>
